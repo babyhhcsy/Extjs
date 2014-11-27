@@ -1,0 +1,40 @@
+(function(){
+	Ext.onReady(function(){
+		new Ext.form.Panel({
+			title:'Ext.form.field.checkBox和Ext.form.field.Radio示例',
+			bodyStyle:'padding 5 5 5 5 ',
+			frame:true,
+			height:150,
+			width:400,
+			renderTo:'form',
+			defaults:{
+				labelSeparator:':',
+				labelWidth:80,
+				width:200,
+				labelAlign:'left'
+			},
+			items:[{
+				xtype:'radio',
+				name:'sex',
+				fieldLabel:'性别',
+				boxLabel:'男'
+			},{
+				xtype:'radio',
+				name:'sex',
+				fieldLabel:'性别',
+				boxLabel:'女'
+			},{
+				xtype:'checkboxfield',
+				name:'swim',
+				fieldLabel:'爱好',
+				boxLabel:'游泳'
+			},{
+				xtype:'checkboxfield',
+				name:'walk',
+				fieldLabel:'爱好',
+				boxLabel:'散步'
+			}]
+		});
+	});
+	
+})();

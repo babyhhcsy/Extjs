@@ -1,0 +1,29 @@
+(function(){
+	Ext.onReady(function(){
+		Ext.QuickTips.init();
+		Ext.create('Ext.form.Panel',{
+			title:'Ext.form.field.Date示例',
+			frame:true,
+			height:300,
+			renderTo:Ext.getBody(),
+			bodyPadding:5,
+			items:[{
+				fieldLabel:'日期选择框',
+				xtype:'datefield',
+				labelSeparator:':',
+				msgTarget:'side',
+				autoFitErrors:false,
+				format:'Y年m月d日',
+				maxValue:'12/31/2008',
+				minValue:'01/01/2008',
+				disabledDates:['2008年05月15日'],//禁止选择的日期
+				disabledDatesText:'禁止选择该日期',
+				disabledDays:[0,6],//禁止选择星期日和星期六
+				disabledDaysText:'禁止选择该日期',
+				width:220
+				}]
+			
+		})
+	});
+	
+})();

@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>testExtjs.html</title>
+	
+    <meta name="keywords" content="keyword1,keyword2,keyword3">
+    <meta name="description" content="this is my page">
+    <meta name="content-type" content="text/html; charset=utf-8">
+    
+ <!--    <link rel="stylesheet" type="text/css" href="../baseJS/Extjs/extjs4.2/resources/css/ext-all-neptune.css">
+	<script type="text/javascript" src="../baseJS/Extjs/extjs4.2/ext-all-dev.js"></script>
+	<script type="text/javascript" src="learnExtjs/association/write.js"></script>
+	<script type="text/javascript" src="/learnExtjs/validations.js"></script> -->
+	<style type="text/css" media="screen">
+		.custom .x-progress-inner{
+			height:17px;
+			background: #ffffff;
+		} 
+		.custom .x-progress-bar{
+			height: 15px;
+			background: transparent url(progressBar/images/custom-bar-green.gif) repeat-x 0 0;
+			border-top: 1px solid #BEBEBE;
+			border-bottom: 1px solid #EFEFEF;
+			border-right: 0;
+		}
+		.saveIcon{
+			background: url(learnExtjs/images/save.gif)
+		}
+		.openIcon{
+			background: url(learnExtjs/images/open.gif)
+		}
+		.newIcon{
+			background: url(learnExtjs/images/new.gif)
+		}
+		.userManager{
+			background: url(learnExtjs/images/userManager.gif) no-repeat;
+		}
+	</style>
+	<script type="text/javascript">
+	 var reg = new RegExp("^[\\0-9a-zA-Z\u4e00-\u9fa5\u005B-\u005D\_\-]+$"); 
+	 if (reg.test("测试sss[-]")) {
+	     console.log("true");
+	  }else{
+	    console.log("false");
+	  }
+	</script>
+  </head>
+  
+  <body>
+  	<div ><input type="button" name="enableBtn" value="启用工具栏" id="enableBtn"/><input type="button" id='disabledBtn' value="禁用工具栏"/></div>
+  	<div id='form'></div>
+  	<div id="errorMsg"></div>
+  	<div id="toolbar"></div>
+  	<div id='progressBar1'>divprogress</div>
+  	<table id='progressBar2'  >
+		  <tr><th id='progressBar3'>Header</th></tr>
+		  <tr><td id='progressBar4'>Data</td></tr>
+	  </table>
+	  <table id='progressBar5'  ></table>
+  <div id="show">12</div>
+  	<button id="myButton">点击我</button>
+  </body>
+</html>

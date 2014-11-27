@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>testExtjs.html</title>
+	
+    <meta name="keywords" content="keyword1,keyword2,keyword3">
+    <meta name="description" content="this is my page">
+    <meta name="content-type" content="text/html; charset=utf-8">
+    
+    <link rel="stylesheet" type="text/css" href="../baseJS/Extjs/extjs4.2/resources/css/ext-all-neptune.css">
+	<script type="text/javascript" src="../baseJS/Extjs/extjs4.2/ext-all-dev.js"></script>
+	<script type="text/javascript" src="learnExtjs/association/write.js"></script>
+	<script type="text/javascript" src="/learnExtjs/validations.js"></script>
+	<style type="text/css" media="screen">
+		.custom .x-progress-inner{
+			height:17px;
+			background: #ffffff;
+		} 
+		.custom .x-progress-bar{
+			height: 15px;
+			background: transparent url(progressBar/images/custom-bar-green.gif) repeat-x 0 0;
+			border-top: 1px solid #BEBEBE;
+			border-bottom: 1px solid #EFEFEF;
+			border-right: 0;
+		}
+		.saveIcon{
+			background: url(learnExtjs/images/save.gif)
+		}
+		.openIcon{
+			background: url(learnExtjs/images/open.gif)
+		}
+		.newIcon{
+			background: url(learnExtjs/images/new.gif)
+		}
+		.userManager{
+			background: url(learnExtjs/images/userManager.gif) no-repeat;
+		}
+	</style>
+<script type="text/javascript" >  
+Ext.onReady(function(){  
+   var combostore = new Ext.data.ArrayStore({  
+                fields: ['id', 'name'],  
+                data: [[1, '团员'], [2, '党员'], [3, '其他1'], [4, '其他11'], [5, '其他111'], [6, '其他1111'], [7, '其他1133'], [8, '其他333'], [9, '其他3'], [10, '其他333'], [11, '其他555'], [12, '其他666663']]  
+            });  
+            //创建Combobox  
+            var combobox = new Ext.form.ComboBox({  
+                fieldLabel: '政治面貌',  
+                store: combostore,  
+                displayField: 'name',  
+                valueField: 'id',  
+                triggerAction: 'all',  
+                emptyText: '请选择...',  
+                allowBlank: false,  
+                blankText: '请选择政治面貌',  
+                mode: 'local'  
+            });  
+            //Combobox获取值  
+            combobox.on('select', function () {  
+                alert(combobox.getValue());  
+            })  
+   
+   
+   
+var checkIfInStore = function(str, store, field, ignoreCase) {  
+    var count = store.getCount();  
+    for( var i = 0; i < count; i++) {  
+        var val = store.getAt(i).get(field);  
+        if (ignoreCase) {  
+            str = str.toUpperCase();  
+            val = val.toUpperCase();  
+        }  
+        if (str == val) {  
+            return true;  
+        }  
+    }  
+    return false;  
+};  
+    
+var ComboSearchPlugin = {  
+    init: function(combo) {  
+        combo.addListener('blur', function(combo) {  
+            // 如果没有写完整则设置为空  
+            var isValid = checkIfInStore(combo.getRawValue(), combo.store, combo.displayField, false);  
+            if (!isValid) {  
+                combo.setValue('');  
+            }  
+        });  
+    
+        combobox.addListener('beforequery', function(qe) {  
+            var combo = qe.combo;  
+            var q = qe.query;  
+            var forceAll = qe.forceAll;  
+            if (forceAll === true || (q.length >= this.minChars)) {  
+                if (this.lastQuery !== q) {  
+                    this.lastQuery = q;  
+                    if (this.mode == 'local') {  
+                        this.selectedIndex = -1;  
+                        if (forceAll) {  
+                            this.store.clearFilter();  
+                        } else {  
+                            // 检索的正则  
+                            var regExp = new RegExp(".*" + q + ".*", "i");  
+                            // 执行检索  
+                            this.store.filterBy(function(record, id) {  
+                                // 得到每个record的项目名称值  
+                                var text = record.get(combo.displayField);  
+                                return regExp.test(text);  
+                            });  
+                        }  
+                        this.onLoad();  
+                    } else {  
+                        this.store.baseParams[this.queryParam] = q;  
+                        this.store.load({  
+                            params: this.getParams(q)  
+                        });  
+                        this.expand();  
+                    }  
+                } else {  
+                    this.selectedIndex = -1;  
+                    this.onLoad();  
+                }  
+            }  
+            return false;  
+        });  
+    }  
+};  
+   
+   
+var win = new Ext.Window ({  
+    title:'213',  
+    width:300,  
+    height:300,  
+    renderTo:'toolbar',
+    items:[combobox]  
+})  
+win.show();  
+})  
+   
+</script>  
+  </head>
+  
+  <body>
+  	<div ><input type="button" name="enableBtn" value="启用工具栏" id="enableBtn"/><input type="button" id='disabledBtn' value="禁用工具栏"/></div>
+  	<div id='form'></div>
+  	<div id="errorMsg"></div>
+  	<div id="toolbar"></div>
+  	<div id='progressBar1'>divprogress</div>
+  	<table id='progressBar2'  >
+		  <tr><th id='progressBar3'>Header</th></tr>
+		  <tr><td id='progressBar4'>Data</td></tr>
+	  </table>
+	  <table id='progressBar5'  ></table>
+  <div id="show">12</div>
+  	<button id="myButton">点击我</button>
+  </body>
+</html>

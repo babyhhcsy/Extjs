@@ -1,0 +1,31 @@
+(function(){
+	Ext.onReady(function(){
+		Ext.create('Ext.form.Panel',{
+			title:'Ext.form.field.Hidden示例',
+			frame:true,
+			height:100,
+			width:300,
+			renderTo:Ext.getBody(),
+			bodyPadding:5,
+			defaults:{
+				labelSeparaor:':',
+				labelWidth:70,
+				width:200,
+				labelAlign:'left'
+			},
+			items:[{
+				name:'username',
+				xtype:'textfield',
+				fieldLabel:'姓名'
+			},{//隐藏
+				name:'age',
+				xtype:'hidden'
+			},{
+				name:'sex',
+				xtype:'textfield',
+				fieldLabel:'性别'
+			}]
+		});
+	});
+	
+})();

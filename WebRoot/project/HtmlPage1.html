@@ -1,0 +1,217 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title></title>
+    <link rel="stylesheet" type="text/css" href="../baseJS/Extjs/extjs4.2/resources/css/ext-all-neptune.css">
+	<script type="text/javascript" src="../baseJS/Extjs/extjs4.2/ext-all-dev.js"></script>
+</head>
+<body>
+    <script>
+        Ext.onReady(function () {
+            Ext.define('Ext.DebugTreeGrid.Model', {
+                extend: 'Ext.data.Model',
+                fields: [{
+                    name: 'Name',
+                    type: 'string'
+                },
+                {
+                    name: 'Value',
+                    type: 'string'
+                },
+                {
+                    name: 'Object'
+                },
+                {
+                    name: 'nodetype'
+                }]
+            });
+            Ext.define('Ext.DebugTreeGrid', {
+                extend: 'Ext.tree.Panel',
+                xtype: 'debugtreegrid',
+                rootVisible: false,
+                forceFit: true,
+                bindObject: null,
+                model: 'Ext.DebugTreeGrid.Model',
+                initComponent: function () {
+                    var me = this;
+                    Ext.apply(this, {
+                        columns: [{
+                            xtype: 'treecolumn',
+                            header: '名称',
+                            flex: 2,
+                            sortable: true,
+                            dataIndex: 'Name',
+                            width: 200
+                        },
+                        {
+                            header: '值',
+                            flex: 1,
+                            dataIndex: 'Value',
+                            sortable: true,
+                            width: 800
+                        }]
+                    });
+                    var obj = this.bindObject;
+                    var root = {
+                        text: ".",
+                        Object: obj,
+                        children: [{
+                            Name: "Object:" + obj,
+                            Value: obj,
+                            Object: obj,
+                            expanded: false,
+                            leaf: false
+                        }]
+                    };
+                    Ext.apply(this, {
+                        root: root
+                    });
+                    this.on("beforeitemexpand", me.doExpandNode);
+                    this.callParent();
+                },
+                getType: function (o) {
+                    var _t;
+                    return ((_t = typeof (o)) == "object" ? o == null && "null" || Object.prototype.toString.call(o).slice(8, -1) : _t).toLowerCase();
+                },
+                doExpandNode: function (node, eOpts) {
+                    node.removeAll(false);
+                    var model = node.data;
+                    var obj = model.Object;
+                    if (!model.nodetype) {
+                        if (Array.isArray(obj)) {
+                            if (obj.length == 0) {
+                                return false;
+                            }
+                            for (var i = 0; i < obj.length; i++) {
+                                var o = obj[i];
+                                var value = o[1],
+                                name = o[0];
+                                if (this.getType(o) == 'string' || this.getType(o) == 'number') {
+                                    value = o;
+                                    name = '';
+                                }
+                                var node_o = {
+                                    Name: name,
+                                    Value: value,
+                                    Object: value,
+                                    leaf: true
+                                };
+                                switch (this.getType(value)) {
+                                    case "function":
+                                        Ext.apply(node_o, {
+                                            leaf: true
+                                        });
+                                        break;
+                                    case "object":
+                                        Ext.apply(node_o, {
+                                            expanded: false,
+                                            expandable: true,
+                                            children: [{}],
+                                            leaf: false
+                                        });
+                                        break;
+                                    case "array":
+                                        Ext.apply(node_o, {
+                                            expanded: false,
+                                            expandable: true,
+                                            children: [{}],
+                                            leaf: false
+                                        });
+                                        break;
+                                    default:
+                                        Ext.apply(node_o, {
+                                            leaf: true
+                                        });
+                                        break;
+
+                                }
+                                node.appendChild(node_o);
+                            }
+                            return true;
+                        }
+                        if (typeof (obj) == typeof ({})) {
+                            var values = [],
+                            funcs = [];
+
+                            for (j in obj) {
+                                var _data = [j, obj[j]];
+                                switch (this.getType(obj[j])) {
+                                    case "function":
+                                        funcs.push(_data);
+                                        break;
+                                    default:
+                                        values.push(_data);
+                                        break;
+                                }
+                            } [values, funcs].forEach(function (item) {
+                                item.sort(function (a, b) {
+                                    return a[0].localeCompare(b[0]);
+                                });
+                            });
+                            node.appendChild([{
+                                Name: "Values",
+                                Value: obj,
+                                Object: values,
+                                expanded: false,
+                                expandable: true,
+                                children: [{}]
+                            },
+                            {
+                                Name: "Funcs",
+                                Value: obj,
+                                Object: funcs,
+                                expanded: false,
+                                expandable: true,
+                                children: [{}]
+                            }]);
+                            return true;
+                        }
+                    }
+                }
+            });
+
+            Ext.debug = function (o, title) {
+                var debugtree = Ext.widget('debugtreegrid', {
+                    bindObject: o
+                });
+                var win = Ext.widget('window', {
+                    title: title,
+                    maximizable: true,
+                    minimizable: true,
+                    closable: true,
+                    modal: false,
+                    resizable: true,
+                    width: 600,
+                    height: 500,
+                    layout: 'fit',
+                    items: [debugtree]
+                });
+                win.show();
+            };
+          var person =   Ext.define("Person", {
+                Name: '',
+                Age: 0,
+                Say: function (msg) {
+                    Ext.Msg.alert(this.Name + " Says:", msg);
+                },
+                constructor: function (name, age) {
+                    this.Name = name;
+                    this.Age = age;
+                }
+            });
+			Ext.debug(person);
+    /*         Ext.debug([1, 2, 3, 4, 5], "输出列表");
+            Ext.debug({ name: 'Li', Age: 200, Items: [1, 2, "see"], do: function () { alert('c'); } }, "输出对象");
+            Ext.debug(new Ext.grid.Panel({ columns: [] }), "输出grid的所有属性、方法");
+ */
+        });
+
+
+
+
+
+
+    </script>
+</body>
+</html>

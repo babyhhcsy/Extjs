@@ -1,0 +1,43 @@
+Ext.onReady(function(){
+	Ext.QuickTips.init();
+	var loginForm = new Ext.form.Panel({
+		title:'Ext.form.field.Text示例',
+		bodyStyle:'padding:5 5 5 5',//设置边距
+		frame:true,
+		height:120,
+		width:200,
+		renderTo:'form',
+		defaultType:'textfield',//设置表单字段的默认类型
+		defaults:{
+			labelSeparator:':',//分隔符
+			labelWidth:50,
+			width:150,
+			allowBlank:false,
+			labelAlign:'left',
+			msgTarget:'side'
+		},
+		items:[{
+			fieldLabel:'用户名',
+			name:'userName',
+			selectOnFocus:true,//得到焦点是自动选择文本；
+			//验证电子邮件格式的正则表达式
+			regex:/^([\w]+)(.[\w]+)*@([\w-]+\.){1,5}([A-Za-z]){2,4}$/,
+			regexText:'格式错误',
+			blankText:'请输入内容'
+			
+		},{
+			name:'password',
+			fieldLabel:'密码',
+			inputType:'password'
+		}],
+		buttons:[{
+			text:'登录',
+			handler:function(){
+				loginForm.form.setValues({
+					userName:'user@com',
+					password:'123456'
+				});
+			}
+		}]
+	});
+})

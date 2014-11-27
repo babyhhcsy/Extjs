@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app version="2.5" 
+	xmlns="http://java.sun.com/xml/ns/javaee" 
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+	xsi:schemaLocation="http://java.sun.com/xml/ns/javaee 
+	http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd">
+	
+	
+	<!-- 加载spring配置文件 -->
+  <context-param>
+        <param-name>contextConfigLocation</param-name>
+        <param-value>
+            classpath*:/spring/applicationContext*.xml
+        </param-value>
+    </context-param>
+    
+    <listener>
+     <listener-class>
+         org.springframework.web.context.ContextLoaderListener
+     </listener-class>
+ </listener>
+<!-- 乱码配置 -->
+<filter>
+        <filter-name>SetEncodeFilter</filter-name>
+        <filter-class>com.xunyun.filter.SetEncodeFilter</filter-class>
+    </filter>
+    <filter-mapping>
+        <filter-name>SetEncodeFilter</filter-name>
+        <url-pattern>/*</url-pattern>
+    </filter-mapping> 
+ <!-- struts2 的配置 -->
+	<filter>
+	 	<filter-name>struts2</filter-name>
+	 	<filter-class>
+	 		org.apache.struts2.dispatcher.ng.filter.StrutsPrepareAndExecuteFilter
+	 	</filter-class>
+	 	<init-param>
+            <!--  //固定格式-->
+             <param-name>actionPackages</param-name> 
+             <param-value>com.ssh</param-value> 
+    </init-param> 
+  </filter>
+  
+  <filter-mapping>
+  	<filter-name>struts2</filter-name>
+  	<url-pattern>*.action</url-pattern>
+  </filter-mapping>
+  <display-name></display-name>	
+  <!-- gzip压缩配置内容 -->
+  <filter>  
+    <filter-name>GZIPFilter</filter-name>  
+    <filter-class>com.tacitknowledge.filters.gzipfilter.GZIPFilter</filter-class>  
+</filter>  
+  
+  <filter-mapping>  
+    <filter-name>GZIPFilter</filter-name>  
+    <url-pattern>*.js</url-pattern>  
+  </filter-mapping>  
+  
+  <filter-mapping>  
+    <filter-name>GZIPFilter</filter-name>  
+    <url-pattern>*.css</url-pattern>  
+  </filter-mapping>  
+  
+  <filter-mapping>  
+    <filter-name>GZIPFilter</filter-name>  
+    <url-pattern>*.html</url-pattern>  
+  </filter-mapping>  
+  
+  <filter-mapping>  
+    <filter-name>GZIPFilter</filter-name>  
+    <url-pattern>*.gif</url-pattern>  
+  </filter-mapping> 
+  
+  <!-- 配置自定义的filter来压缩js文件 -->
+    <filter>   
+        <filter-name>GzipJsFilter</filter-name>   
+        <filter-class>com.xunyun.filter.GzipJsFilter</filter-class>   
+        <init-param>   
+            <param-name>headers</param-name>   
+            <param-value>Content-Encoding=gzip</param-value>   
+        </init-param>  
+    </filter>  
+    <filter-mapping>  
+       <filter-name>GzipJsFilter</filter-name>  
+       <url-pattern>*.js</url-pattern>  
+    </filter-mapping>  
+  
+  <welcome-file-list>
+    <welcome-file>index.jsp</welcome-file>
+  </welcome-file-list>
+</web-app>

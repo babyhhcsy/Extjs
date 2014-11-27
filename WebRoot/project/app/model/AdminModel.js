@@ -1,0 +1,10 @@
+Ext.define("app.model.AdminModel",{
+	extend:"Ext.data.Model",
+	fields:[
+		{name:"id",type:"int",srotable:true},
+		{name:"userName",type:"string",srotable:true},
+		{name:"password",type:"string",srotable:true},
+		{name:"sex",type:"string",srotable:true},
+		{name:"birthday",type:"date",crotable:true}
+	]
+});
